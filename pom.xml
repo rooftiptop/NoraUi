@@ -91,7 +91,7 @@
         <sonar.junit.reportPaths>${project.build.directory}/surefire-reports/junit</sonar.junit.reportPaths>
         <sonar.surefire.reportPaths>${project.build.directory}/surefire-reports</sonar.surefire.reportPaths>
         <sonar.jacoco.directory>${project.testresult.directory}/coverage/jacoco</sonar.jacoco.directory>
-        <sonar.jacoco.reportPaths>${sonar.jacoco.directory}/jacoco.exec</sonar.jacoco.reportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>${sonar.jacoco.directory}/jacoco.exec</sonar.coverage.jacoco.xmlReportPaths>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
         <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java</sonar.exclusions>
