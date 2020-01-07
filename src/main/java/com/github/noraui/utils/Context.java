@@ -582,11 +582,11 @@ public class Context {
      * @return The function's return value if the function returned something different
      *         from null or false before the timeout expired.
      */
-    public static <T> T waitUntil(ExpectedCondition<T> condition) {
+    public static <T> ChainableWait<T> waitUntil(ExpectedCondition<T> condition, Objects... args) {
         if (getInstance().webDriverWait == null) {
             getInstance().webDriverWait = new WebDriverWait(getDriver(), getTimeout());
         }
-        return getInstance().webDriverWait.until(condition);
+        return new ChainableWait<T>(getInstance().webDriverWait).then(condition);
     }
 
     /**
