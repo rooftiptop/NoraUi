@@ -1,4 +1,4 @@
-package com.github.noraui.utils;
+package com.github.noraui.browser.waits;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -80,8 +80,4 @@ public class ChainableWait<T> {
         return Collections.emptyList();
     }
 
-    @FunctionalInterface
-    public interface TriFunction<A, B, C, O> {
-        public O apply(A a, B b, C c);
-    }
 }

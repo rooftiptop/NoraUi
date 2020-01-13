@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 
 import com.github.noraui.application.page.Page;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
@@ -98,7 +99,7 @@ public class ScreenSteps extends Step {
         String element = pageElement.split("-")[1];
         log.debug("I save a screenshot of [{}-{}] in [{}.jpg]", page, element, screenName);
         try {
-            screenService.saveScreenshot(screenName, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + element)))));
+            screenService.saveScreenshot(screenName, Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + element)))));
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Page.getInstance(page).getCallBack());
         }

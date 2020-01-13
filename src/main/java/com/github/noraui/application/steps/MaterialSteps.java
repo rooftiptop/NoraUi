@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
@@ -33,9 +34,8 @@ import io.cucumber.java.fr.Lorsque;
 public class MaterialSteps extends Step {
 
     static Logger log;
-    
+
     /**
-     * 
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
      * @param value
@@ -56,9 +56,8 @@ public class MaterialSteps extends Step {
         String elementName = pageElement.split("-")[1];
         selectMatSlideToggle(Page.getInstance(page).getPageElementByKey('-' + elementName), Boolean.parseBoolean(value));
     }
-    
+
     /**
-     * 
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
      * @param valueOrKey
@@ -97,7 +96,7 @@ public class MaterialSteps extends Step {
      */
     protected void selectMatSlideToggle(PageElement element, boolean checked, Object... args) throws TechnicalException, FailureException {
         try {
-            final WebElement webElement = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element, args)));
+            final WebElement webElement = Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element, args)));
             if ("false".equals(webElement.getAttribute("ng-reflect-checked")) && checked || "true".equals(webElement.getAttribute("ng-reflect-checked")) && !checked) {
                 webElement.click();
             }
@@ -106,7 +105,7 @@ public class MaterialSteps extends Step {
                     element.getPage().getCallBack());
         }
     }
-    
+
     /**
      * Update Material radio list by text "input".
      *
@@ -123,7 +122,7 @@ public class MaterialSteps extends Step {
     protected void updateMatRadioButton(PageElement pageElement, String valueOrKey) throws TechnicalException, FailureException {
         final String value = Context.getValue(valueOrKey) != null ? Context.getValue(valueOrKey) : valueOrKey;
         try {
-            final List<WebElement> radioButtons = Context.waitUntil(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
+            final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
             for (final WebElement button : radioButtons) {
                 if (button.getAttribute(VALUE).equals(value)) {
                     button.click();
@@ -131,7 +130,8 @@ public class MaterialSteps extends Step {
                 }
             }
         } catch (final Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MATERIAL_UNABLE_TO_SELECT_RADIO_BUTTON), pageElement), true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MATERIAL_UNABLE_TO_SELECT_RADIO_BUTTON), pageElement), true,
+                    pageElement.getPage().getCallBack());
         }
     }
 

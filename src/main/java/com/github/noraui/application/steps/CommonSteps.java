@@ -20,6 +20,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.WindowManager;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.metrics.annotation.time.Time;
 import com.github.noraui.cucumber.metrics.annotation.time.TimeName;
@@ -278,7 +279,7 @@ public class CommonSteps extends Step {
         String elementName = pageElement.split("-")[1];
         String value = "";
         try {
-            value = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)))).getText();
+            value = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)))).getText();
             if (value == null) {
                 value = "";
             }
@@ -395,7 +396,7 @@ public class CommonSteps extends Step {
             try {
                 final Set<String> initialWindows = getDriver().getWindowHandles();
                 clickOn(Page.getInstance(page).getPageElementByKey('-' + elementName));
-                final String newWindowHandle = Context.waitUntil(WindowManager.newWindowOpens(initialWindows));
+                final String newWindowHandle = Wait.until(WindowManager.newWindowOpens(initialWindows));
                 Context.addWindow(wKey, newWindowHandle);
                 getDriver().switchTo().window(newWindowHandle);
                 // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).

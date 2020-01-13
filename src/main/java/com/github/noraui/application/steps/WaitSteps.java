@@ -13,11 +13,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 
 import com.github.noraui.application.page.Page;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.log.annotation.Loggable;
-import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Utilities;
 
 import io.cucumber.java.en.Then;
@@ -51,7 +51,7 @@ public class WaitSteps extends Step {
     public void waitAttributeContains(String pageElement, final String attribute, final String value, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.attributeContains(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), attribute, value));
+        Wait.until(ExpectedConditions.attributeContains(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), attribute, value));
     }
 
     @Conditioned
@@ -60,7 +60,7 @@ public class WaitSteps extends Step {
     public void waitAttributeToBe(String pageElement, final String attribute, final String value, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.attributeToBe(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), attribute, value));
+        Wait.until(ExpectedConditions.attributeToBe(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), attribute, value));
     }
 
     @Conditioned
@@ -69,7 +69,7 @@ public class WaitSteps extends Step {
     public void waitElementToBeClickable(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+        Wait.until(ExpectedConditions.elementToBeClickable(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
     }
 
     @Conditioned
@@ -78,7 +78,7 @@ public class WaitSteps extends Step {
     public void waitElementToBeSelected(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.elementSelectionStateToBe(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), true));
+        Wait.until(ExpectedConditions.elementSelectionStateToBe(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), true));
     }
 
     @Conditioned
@@ -87,7 +87,7 @@ public class WaitSteps extends Step {
     public void waitElementToBeNotSelected(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.elementSelectionStateToBe(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), false));
+        Wait.until(ExpectedConditions.elementSelectionStateToBe(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), false));
     }
 
     @Conditioned
@@ -96,7 +96,7 @@ public class WaitSteps extends Step {
     public void waitInvisibilityOf(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.invisibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+        Wait.until(ExpectedConditions.invisibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
     }
 
     /**
@@ -117,7 +117,7 @@ public class WaitSteps extends Step {
     public void waitInvisibilityOf(String pageElement, int timeOutInSeconds, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.invisibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), timeOutInSeconds);
+        Wait.until(ExpectedConditions.invisibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), timeOutInSeconds);
     }
 
     @Conditioned
@@ -126,7 +126,7 @@ public class WaitSteps extends Step {
     public void waitInvisibilityOfElementWithText(String pageElement, final String text, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.invisibilityOfElementWithText(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
+        Wait.until(ExpectedConditions.invisibilityOfElementWithText(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
     }
 
     @Conditioned
@@ -135,7 +135,7 @@ public class WaitSteps extends Step {
     public void waitInvisibilityOfElementWithTextWithTimeout(String pageElement, final String text, int timeOutInSeconds, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.invisibilityOfElementWithText(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text), timeOutInSeconds);
+        Wait.until(ExpectedConditions.invisibilityOfElementWithText(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text), timeOutInSeconds);
     }
 
     @Conditioned
@@ -144,7 +144,7 @@ public class WaitSteps extends Step {
     public void waitNumberOfElementsToBe(String pageElement, final int number, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.numberOfElementsToBe(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
+        Wait.until(ExpectedConditions.numberOfElementsToBe(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
     }
 
     @Conditioned
@@ -153,7 +153,7 @@ public class WaitSteps extends Step {
     public void waitNumberOfElementsToBeLessThan(String pageElement, final Integer number, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.numberOfElementsToBeLessThan(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
+        Wait.until(ExpectedConditions.numberOfElementsToBeLessThan(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
     }
 
     @Conditioned
@@ -162,14 +162,14 @@ public class WaitSteps extends Step {
     public void waitNumberOfElementsToBeMoreThan(String pageElement, final Integer number, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.numberOfElementsToBeMoreThan(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
+        Wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
     }
 
     @Conditioned
     @Lorsque("J'attends que le nombre de fenêtre soient {int}(\\?)")
     @Then("I wait number of windows to be {int}(\\?)")
     public void waitNumberOfWindowsToBe(final Integer expectedNumberOfWindows, List<GherkinStepCondition> conditions) throws TechnicalException {
-        Context.waitUntil(ExpectedConditions.numberOfWindowsToBe(expectedNumberOfWindows));
+        Wait.until(ExpectedConditions.numberOfWindowsToBe(expectedNumberOfWindows));
     }
 
     @Conditioned
@@ -178,7 +178,7 @@ public class WaitSteps extends Step {
     public void waitPresenceOfElementLocated(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+        Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName))));
     }
 
     @Conditioned
@@ -189,7 +189,7 @@ public class WaitSteps extends Step {
         String elementName = pageElement.split("-")[1];
         String childPage = childPageElement.split("-")[0];
         String childElementName = childPageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.presenceOfNestedElementLocatedBy(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)),
+        Wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)),
                 Utilities.getLocator(Page.getInstance(childPage).getPageElementByKey('-' + childElementName))));
     }
 
@@ -211,7 +211,7 @@ public class WaitSteps extends Step {
     public void waitStalenessOf(String pageElement, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.stalenessOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), time);
+        Wait.until(ExpectedConditions.stalenessOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), time);
     }
 
     @Conditioned
@@ -221,7 +221,7 @@ public class WaitSteps extends Step {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
         Pattern pattern = Pattern.compile(regexp);
-        Context.waitUntil(ExpectedConditions.textMatches(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), pattern));
+        Wait.until(ExpectedConditions.textMatches(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), pattern));
     }
 
     @Conditioned
@@ -230,7 +230,7 @@ public class WaitSteps extends Step {
     public void waitTextToBe(String pageElement, final String value, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.textToBe(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), value));
+        Wait.until(ExpectedConditions.textToBe(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), value));
     }
 
     @Conditioned
@@ -239,7 +239,7 @@ public class WaitSteps extends Step {
     public void waitTextToBePresentInElementLocated(String pageElement, final String text, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.textToBePresentInElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
+        Wait.until(ExpectedConditions.textToBePresentInElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
     }
 
     /**
@@ -260,42 +260,42 @@ public class WaitSteps extends Step {
     public void waitTextToBePresentInElementValue(String pageElement, String text, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.textToBePresentInElementValue(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
+        Wait.until(ExpectedConditions.textToBePresentInElementValue(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
     }
 
     @Conditioned
     @Lorsque("J'attends que le titre correspond {string}(\\?)")
     @Then("I wait title contains {string}(\\?)")
     public void waitTitleContains(final String title, List<GherkinStepCondition> conditions) throws TechnicalException {
-        Context.waitUntil(ExpectedConditions.titleContains(title));
+        Wait.until(ExpectedConditions.titleContains(title));
     }
 
     @Conditioned
     @Lorsque("J'attends que le titre correspond à {string}(\\?)")
     @Then("I wait title equals {string}(\\?)")
     public void waitTitleIs(final String title, List<GherkinStepCondition> conditions) throws TechnicalException {
-        Context.waitUntil(ExpectedConditions.titleIs(title));
+        Wait.until(ExpectedConditions.titleIs(title));
     }
 
     @Conditioned
     @Lorsque("J'attends que l'url correspond {string}(\\?)")
     @Then("I wait url contains {string}(\\?)")
     public void waitUrlContains(final String fraction, List<GherkinStepCondition> conditions) throws TechnicalException {
-        Context.waitUntil(ExpectedConditions.urlContains(fraction));
+        Wait.until(ExpectedConditions.urlContains(fraction));
     }
 
     @Conditioned
     @Lorsque("J'attends que l'url vérifie le texte {string}(\\?)")
     @Then("I wait url matches {string}(\\?)")
     public void waitUrlMatches(final String regex, List<GherkinStepCondition> conditions) throws TechnicalException {
-        Context.waitUntil(ExpectedConditions.urlMatches(regex));
+        Wait.until(ExpectedConditions.urlMatches(regex));
     }
 
     @Conditioned
     @Lorsque("J'attends que l'url correspond à {string}(\\?)")
     @Then("I wait url equals {string}(\\?)")
     public void waitUrlToBe(final String url, List<GherkinStepCondition> conditions) throws TechnicalException {
-        Context.waitUntil(ExpectedConditions.urlToBe(url));
+        Wait.until(ExpectedConditions.urlToBe(url));
     }
 
     @Conditioned
@@ -304,7 +304,7 @@ public class WaitSteps extends Step {
     public void waitVisibilityOf(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.visibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+        Wait.until(ExpectedConditions.visibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
     }
 
     @Conditioned
@@ -315,7 +315,7 @@ public class WaitSteps extends Step {
         String elementName = pageElement.split("-")[1];
         String childPage = childPageElement.split("-")[0];
         String childElementName = childPageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.visibilityOfNestedElementsLocatedBy(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)),
+        Wait.until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)),
                 Utilities.getLocator(Page.getInstance(childPage).getPageElementByKey('-' + childElementName))));
     }
 

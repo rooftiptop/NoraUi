@@ -37,16 +37,9 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
-import org.javatuples.Triplet;
 import org.joda.time.DateTime;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.slf4j.Logger;
@@ -193,16 +186,6 @@ public class Context {
      * start date of current Cucumber scenario.
      */
     private DateTime startCurrentScenario;
-
-    /**
-     * Single global instance of WebDriverWait
-     */
-    private WebDriverWait webDriverWait;
-
-    /**
-     * Single global custom instance of WebDriverWait
-     */
-    private WebDriverWait webDriverCustomWait;
 
     /**
      * browser: chrome, firefox or ie.
@@ -436,8 +419,6 @@ public class Context {
         instance.driverFactory.clear();
         instance.windowManager.clear();
         instance.scenarioRegistry.clear();
-        instance.webDriverWait = null;
-        instance.webDriverCustomWait = null;
         instance.scenarioName = null;
     }
 
@@ -573,53 +554,6 @@ public class Context {
 
     public static void startCurrentScenario() {
         getInstance().startCurrentScenario = DateTime.now();
-    }
-
-    /**
-     * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in
-     * the 'until' condition, and immediately propagate all others. You can add more to the ignore
-     * list by calling ignoring(exceptions to add).
-     * 
-     * @param <T>
-     *            The function's expected return type.
-     * @param condition
-     *            the parameter to pass to the {@link ExpectedCondition}
-     * @return The function's return value if the function returned something different
-     *         from null or false before the timeout expired.
-     */
-    public static <T> ChainableWait<?> waitUntil(ExpectedCondition<T> condition, Objects... args) {
-        if (getInstance().webDriverWait == null) {
-            getInstance().webDriverWait = new WebDriverWait(getDriver(), getTimeout());
-        }
-        String s = "";
-        return new ChainableWait<T>(getInstance().webDriverWait).wait(condition).wait(ExpectedConditions::stalenessOf, (T elem) -> {
-            return new RemoteWebElement();
-        })
-        .wait(ExpectedConditions::attributeToBe, (a) -> Triplet.<By, String, String> with(null, "", ""))
-        .wait(ExpectedConditions::invisibilityOfAllElements, (Boolean be) -> {
-            be.booleanValue();
-            WebElement[] elems = new WebElement[3];
-            return elems;
-        }).;
-    }
-
-    /**
-     * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in
-     * the 'until' condition, and immediately propagate all others. You can add more to the ignore
-     * list by calling ignoring(exceptions to add).
-     * 
-     * @param <T>
-     *            The function's expected return type.
-     * @param condition
-     *            the parameter to pass to the {@link ExpectedCondition}
-     * @param timeOutInSeconds
-     *            The timeout in seconds when an expectation is called
-     * @return The function's return value if the function returned something different
-     *         from null or false before the timeout expired.
-     */
-    public static <T> T waitUntil(ExpectedCondition<T> condition, int timeOutInSeconds) {
-        getInstance().webDriverCustomWait = new WebDriverWait(getDriver(), timeOutInSeconds);
-        return getInstance().webDriverCustomWait.until(condition);
     }
 
     public static DataInputProvider getDataInputProvider() {
