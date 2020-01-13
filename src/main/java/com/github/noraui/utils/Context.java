@@ -37,10 +37,13 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
+import org.javatuples.Triplet;
 import org.joda.time.DateTime;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
@@ -582,11 +585,14 @@ public class Context {
      * @return The function's return value if the function returned something different
      *         from null or false before the timeout expired.
      */
-    public static <T> ChainableWait<T> waitUntil(ExpectedCondition<T> condition, Objects... args) {
+    public static <T> ChainableWait<?> waitUntil(ExpectedCondition<T> condition, Objects... args) {
         if (getInstance().webDriverWait == null) {
             getInstance().webDriverWait = new WebDriverWait(getDriver(), getTimeout());
         }
-        return new ChainableWait<T>(getInstance().webDriverWait).then(condition);
+        String s = "";
+        return new ChainableWait<T>(getInstance().webDriverWait).wait(condition).wait(ExpectedConditions::stalenessOf, (webElem) -> {
+            return new RemoteWebElement();
+        }).wait(ExpectedConditions::attributeToBe, (a) -> Triplet.<?, ?, ?> with("", "", ""));
     }
 
     /**

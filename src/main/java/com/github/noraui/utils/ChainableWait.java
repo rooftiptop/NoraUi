@@ -2,9 +2,13 @@ package com.github.noraui.utils;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.javatuples.Pair;
+import org.javatuples.Triplet;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -21,16 +25,34 @@ public class ChainableWait<T> {
         this.chainedValue = chainedValue;
     }
 
-    public ChainableWait<T> wait(Function<Object, ExpectedCondition<T>> mapper) {
-        return new ChainableWait<T>(webDriverWait, webDriverWait.until(mapper.apply(chainedValue)));
+    public <A, O> ChainableWait<O> wait(Function<A, ExpectedCondition<O>> condition, Function<T, A> func) {
+        return new ChainableWait<O>(webDriverWait, webDriverWait.until(condition.apply(func.apply(chainedValue))));
     }
 
-    public <R> ChainableWait<R> then(Function<T, R> mapper) {
-        return new ChainableWait<R>(webDriverWait, mapper.apply(chainedValue));
+    public <A, B, O> ChainableWait<O> wait(BiFunction<A, B, ExpectedCondition<O>> condition, Function<T, Pair<A, B>> func) {
+        Pair<A, B> pair = func.apply(chainedValue);
+        return new ChainableWait<O>(webDriverWait, webDriverWait.until(condition.apply(pair.getValue0(), pair.getValue1())));
+    }
+
+    public <A, B, C, O> ChainableWait<O> wait(TriFunction<A, B, C, ExpectedCondition<O>> condition, Function<T, Triplet<A, B, C>> func) {
+        Triplet<A, B, C> triplet = func.apply(chainedValue);
+        return new ChainableWait<O>(webDriverWait, webDriverWait.until(condition.apply(triplet.getValue0(), triplet.getValue1(), triplet.getValue2())));
+    }
+
+    public <R, S> ChainableWait<R> wait(Function<S, ExpectedCondition<R>> condition) {
+        return null;
+    }
+
+    public ChainableWait<T> wait(Supplier<ExpectedCondition<T>> supplier) {
+        return new ChainableWait<T>(webDriverWait, webDriverWait.until(supplier.get()));
     }
 
     public ChainableWait<T> wait(ExpectedCondition<T> condition) {
         return new ChainableWait<T>(webDriverWait, webDriverWait.until(condition));
+    }
+
+    public <R> ChainableWait<R> then(Function<T, R> func) {
+        return new ChainableWait<R>(webDriverWait, func.apply(chainedValue));
     }
 
     @SuppressWarnings("unchecked")
@@ -45,11 +67,8 @@ public class ChainableWait<T> {
         return chainedValue;
     }
 
-}
-
-@FunctionalInterface
-interface Expect<T> {
-    default T expect(Object... arguments) {
+    @FunctionalInterface
+    public interface TriFunction<A, B, C, O> {
+        public O apply(A a, B b, C c);
     }
-
 }
