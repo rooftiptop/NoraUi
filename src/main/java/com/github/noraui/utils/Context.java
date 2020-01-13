@@ -39,8 +39,10 @@ import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.javatuples.Triplet;
 import org.joda.time.DateTime;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -590,9 +592,15 @@ public class Context {
             getInstance().webDriverWait = new WebDriverWait(getDriver(), getTimeout());
         }
         String s = "";
-        return new ChainableWait<T>(getInstance().webDriverWait).wait(condition).wait(ExpectedConditions::stalenessOf, (webElem) -> {
+        return new ChainableWait<T>(getInstance().webDriverWait).wait(condition).wait(ExpectedConditions::stalenessOf, (T elem) -> {
             return new RemoteWebElement();
-        }).wait(ExpectedConditions::attributeToBe, (a) -> Triplet.<?, ?, ?> with("", "", ""));
+        })
+        .wait(ExpectedConditions::attributeToBe, (a) -> Triplet.<By, String, String> with(null, "", ""))
+        .wait(ExpectedConditions::invisibilityOfAllElements, (Boolean be) -> {
+            be.booleanValue();
+            WebElement[] elems = new WebElement[3];
+            return elems;
+        }).;
     }
 
     /**

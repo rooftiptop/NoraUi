@@ -3,6 +3,7 @@ package com.github.noraui.utils;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -39,8 +40,8 @@ public class ChainableWait<T> {
         return new ChainableWait<O>(webDriverWait, webDriverWait.until(condition.apply(triplet.getValue0(), triplet.getValue1(), triplet.getValue2())));
     }
 
-    public <R, S> ChainableWait<R> wait(Function<S, ExpectedCondition<R>> condition) {
-        return null;
+    public ChainableWait<T> wait(Function<T, ExpectedCondition<T>> func) {
+        return new ChainableWait<T>(webDriverWait, webDriverWait.until(func.apply(chainedValue)));
     }
 
     public ChainableWait<T> wait(Supplier<ExpectedCondition<T>> supplier) {
@@ -51,8 +52,24 @@ public class ChainableWait<T> {
         return new ChainableWait<T>(webDriverWait, webDriverWait.until(condition));
     }
 
-    public <R> ChainableWait<R> then(Function<T, R> func) {
-        return new ChainableWait<R>(webDriverWait, func.apply(chainedValue));
+    public <A> ChainableWait<A> map(Function<T, A> func) {
+        return new ChainableWait<A>(webDriverWait, func.apply(chainedValue));
+    }
+
+    public <A> ChainableWait<A> map(A value) {
+        return new ChainableWait<A>(webDriverWait, value);
+    }
+
+    public void then(Consumer<T> consumer) {
+        consumer.accept(chainedValue);
+    }
+
+    public <O> O then(Function<T, O> func) {
+        return func.apply(chainedValue);
+    }
+
+    public T get() {
+        return chainedValue;
     }
 
     @SuppressWarnings("unchecked")
@@ -61,10 +78,6 @@ public class ChainableWait<T> {
             return ((Collection<T>) chainedValue).stream().map(v -> new ChainableWait<T>(webDriverWait, v)).collect(Collectors.toList());
         }
         return Collections.emptyList();
-    }
-
-    public T get() {
-        return chainedValue;
     }
 
     @FunctionalInterface
