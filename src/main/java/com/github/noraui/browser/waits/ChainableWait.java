@@ -40,12 +40,12 @@ public class ChainableWait<T> {
         return new ChainableWait<O>(webDriverWait, webDriverWait.until(condition.apply(triplet.getValue0(), triplet.getValue1(), triplet.getValue2())));
     }
 
-    public ChainableWait<T> wait(Function<T, ExpectedCondition<T>> func) {
-        return new ChainableWait<T>(webDriverWait, webDriverWait.until(func.apply(chainedValue)));
+    public <O> ChainableWait<O> wait(Function<T, ExpectedCondition<O>> func) {
+        return new ChainableWait<O>(webDriverWait, webDriverWait.until(func.apply(chainedValue)));
     }
 
-    public ChainableWait<T> wait(Supplier<ExpectedCondition<T>> supplier) {
-        return new ChainableWait<T>(webDriverWait, webDriverWait.until(supplier.get()));
+    public <O> ChainableWait<O> wait(Supplier<ExpectedCondition<O>> supplier) {
+        return new ChainableWait<O>(webDriverWait, webDriverWait.until(supplier.get()));
     }
 
     public ChainableWait<T> wait(ExpectedCondition<T> condition) {

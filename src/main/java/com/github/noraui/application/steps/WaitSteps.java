@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 
 import com.github.noraui.application.page.Page;
+import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.exception.TechnicalException;
@@ -48,55 +49,66 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("J'attends que l'attribut de {string} contient {string}(\\?)")
     @Then("I wait attribute of {string} contains {string}(\\?)")
-    public void waitAttributeContains(String pageElement, final String attribute, final String value, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitAttributeContains(String pageElement, final String attribute, final String value,
+            List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.attributeContains(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), attribute, value));
+        Wait.until(ExpectedConditions.attributeContains(
+                Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), attribute,
+                value));
     }
 
     @Conditioned
     @Lorsque("J'attends que l'attribut de {string} correspond à {string}(\\?)")
     @Then("I wait attribute of {string} equals {string}(\\?)")
-    public void waitAttributeToBe(String pageElement, final String attribute, final String value, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitAttributeToBe(String pageElement, final String attribute, final String value,
+            List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.attributeToBe(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), attribute, value));
+        Wait.until(ExpectedConditions.attributeToBe(
+                Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), attribute,
+                value));
     }
 
     @Conditioned
     @Lorsque("J'attends que {string} soit cliquable(\\?)")
     @Then("I wait for {string} to be clickable(\\?)")
-    public void waitElementToBeClickable(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitElementToBeClickable(String pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.elementToBeClickable(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+        Wait.until(ExpectedConditions.elementToBeClickable(
+                Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
     }
 
     @Conditioned
     @Lorsque("J'attends que {string} soit sélectionné(\\?)")
     @Then("I wait for {string} to be selected(\\?)")
-    public void waitElementToBeSelected(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitElementToBeSelected(String pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.elementSelectionStateToBe(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), true));
+        Wait.until(ExpectedConditions.elementSelectionStateToBe(
+                Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), true));
     }
 
     @Conditioned
     @Lorsque("J'attends que {string} ne soit pas sélectionné(\\?)")
     @Then("I wait for {string} to be not selected(\\?)")
-    public void waitElementToBeNotSelected(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.elementSelectionStateToBe(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)), false));
+    public void waitElementToBeNotSelected(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
+        Wait.until(ExpectedConditions.elementSelectionStateToBe(Utilities.getLocator(pageElement), false));
     }
 
     @Conditioned
     @Lorsque("J'attends l'invisibilité de {string}(\\?)")
     @Then("I wait invisibility of {string}(\\?)")
-    public void waitInvisibilityOf(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitInvisibilityOf(String pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.invisibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+        Wait.until(ExpectedConditions
+                .invisibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
     }
 
     /**
@@ -114,82 +126,103 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("J'attends l'invisibilité de {string} avec un timeout de {int} secondes(\\?)")
     @Then("I wait invisibility of {string} with timeout of {int} seconds(\\?)")
-    public void waitInvisibilityOf(String pageElement, int timeOutInSeconds, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitInvisibilityOf(String pageElement, int timeOutInSeconds, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.invisibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), timeOutInSeconds);
+        Wait.until(
+                ExpectedConditions.invisibilityOf(
+                        Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))),
+                timeOutInSeconds);
     }
 
     @Conditioned
     @Lorsque("J'attends l'invisibilité de l'élément avec le text {string}(\\?)")
     @Then("I wait invisibility of element with text {string}(\\?)")
-    public void waitInvisibilityOfElementWithText(String pageElement, final String text, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitInvisibilityOfElementWithText(String pageElement, final String text,
+            List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.invisibilityOfElementWithText(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
+        Wait.until(ExpectedConditions.invisibilityOfElementWithText(
+                Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
     }
 
     @Conditioned
     @Lorsque("J'attends l'invisibilité de l'élément avec le text {string} avec un timeout de {int} secondes(\\?)")
     @Then("I wait invisibility of element with text {string} with timeout of {int} seconds(\\?)")
-    public void waitInvisibilityOfElementWithTextWithTimeout(String pageElement, final String text, int timeOutInSeconds, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitInvisibilityOfElementWithTextWithTimeout(String pageElement, final String text,
+            int timeOutInSeconds, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.invisibilityOfElementWithText(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text), timeOutInSeconds);
+        Wait.until(
+                ExpectedConditions.invisibilityOfElementWithText(
+                        Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text),
+                timeOutInSeconds);
     }
 
     @Conditioned
     @Lorsque("J'attends que le nombre de {string} soient {int}(\\?)")
     @Then("I wait number of {string} to be {int}(\\?)")
-    public void waitNumberOfElementsToBe(String pageElement, final int number, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitNumberOfElementsToBe(String pageElement, final int number, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.numberOfElementsToBe(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
+        Wait.until(ExpectedConditions.numberOfElementsToBe(
+                Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
     }
 
     @Conditioned
     @Lorsque("J'attends que le nombre de {string} soient inférieur à {int}(\\?)")
     @Then("I wait number of {string} to be less {int}(\\?)")
-    public void waitNumberOfElementsToBeLessThan(String pageElement, final Integer number, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitNumberOfElementsToBeLessThan(String pageElement, final Integer number,
+            List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.numberOfElementsToBeLessThan(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
+        Wait.until(ExpectedConditions.numberOfElementsToBeLessThan(
+                Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
     }
 
     @Conditioned
     @Lorsque("J'attends que le nombre de {string} soient supérieur à {int}(\\?)")
     @Then("I wait number of {string} to be more than {int}(\\?)")
-    public void waitNumberOfElementsToBeMoreThan(String pageElement, final Integer number, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitNumberOfElementsToBeMoreThan(String pageElement, final Integer number,
+            List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
+        Wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(
+                Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), number));
     }
 
     @Conditioned
     @Lorsque("J'attends que le nombre de fenêtre soient {int}(\\?)")
     @Then("I wait number of windows to be {int}(\\?)")
-    public void waitNumberOfWindowsToBe(final Integer expectedNumberOfWindows, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitNumberOfWindowsToBe(final Integer expectedNumberOfWindows, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
         Wait.until(ExpectedConditions.numberOfWindowsToBe(expectedNumberOfWindows));
     }
 
     @Conditioned
     @Lorsque("J'attends la présence de {string}(\\?)")
     @Then("I wait presence of {string}(\\?)")
-    public void waitPresenceOfElementLocated(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitPresenceOfElementLocated(String pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+        Wait.until(ExpectedConditions.presenceOfElementLocated(
+                Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName))));
     }
 
     @Conditioned
     @Lorsque("J'attends la présence de {string} et {string} imbriqué(\\?)")
     @Then("I wait presence of {string} and nested {string}(\\?)")
-    public void waitPresenceOfNestedElementLocatedBy(String pageElement, String childPageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitPresenceOfNestedElementLocatedBy(String pageElement, String childPageElement,
+            List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
         String childPage = childPageElement.split("-")[0];
         String childElementName = childPageElement.split("-")[1];
-        Wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)),
+        Wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(
+                Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)),
                 Utilities.getLocator(Page.getInstance(childPage).getPageElementByKey('-' + childElementName))));
     }
 
@@ -208,38 +241,46 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("J'attends la disparition de {string} avec un timeout de {int} seconde(s)(\\?)")
     @Then("I wait staleness of {string} with timeout of {int} second(s)(\\?)")
-    public void waitStalenessOf(String pageElement, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitStalenessOf(String pageElement, int time, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.stalenessOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), time);
+        Wait.until(ExpectedConditions.stalenessOf(
+                Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), time);
     }
 
     @Conditioned
     @Lorsque("J'attends que le text de {string} vérifie le texte {string}(\\?)")
     @Then("I wait {string} text matches {string}(\\?)")
-    public void waitTextMatches(String pageElement, String regexp, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitTextMatches(String pageElement, String regexp, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
         Pattern pattern = Pattern.compile(regexp);
-        Wait.until(ExpectedConditions.textMatches(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), pattern));
+        Wait.until(ExpectedConditions.textMatches(
+                Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), pattern));
     }
 
     @Conditioned
     @Lorsque("J'attends que le text de {string} correspond à {string}(\\?)")
     @Then("I wait {string} equals {string}(\\?)")
-    public void waitTextToBe(String pageElement, final String value, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitTextToBe(String pageElement, final String value, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.textToBe(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), value));
+        Wait.until(ExpectedConditions
+                .textToBe(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), value));
     }
 
     @Conditioned
     @Lorsque("J'attends que le text de {string} contient {string}(\\?)")
     @Then("I wait {string} text contains {string}(\\?)")
-    public void waitTextToBePresentInElementLocated(String pageElement, final String text, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitTextToBePresentInElementLocated(String pageElement, final String text,
+            List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.textToBePresentInElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
+        Wait.until(ExpectedConditions.textToBePresentInElementLocated(
+                Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
     }
 
     /**
@@ -257,10 +298,12 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("J'attends que le texte soit présent dans la valeur de l'élément {string} avec {string}(\\?)")
     @Then("I wait text to be present in element value {string} with {string}(\\?)")
-    public void waitTextToBePresentInElementValue(String pageElement, String text, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitTextToBePresentInElementValue(String pageElement, String text,
+            List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.textToBePresentInElementValue(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
+        Wait.until(ExpectedConditions.textToBePresentInElementValue(
+                Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)), text));
     }
 
     @Conditioned
@@ -280,7 +323,8 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("J'attends que l'url correspond {string}(\\?)")
     @Then("I wait url contains {string}(\\?)")
-    public void waitUrlContains(final String fraction, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitUrlContains(final String fraction, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
         Wait.until(ExpectedConditions.urlContains(fraction));
     }
 
@@ -304,18 +348,21 @@ public class WaitSteps extends Step {
     public void waitVisibilityOf(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions.visibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+        Wait.until(ExpectedConditions
+                .visibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
     }
 
     @Conditioned
     @Lorsque("J'attends la visibilité de {string} et {string} imbriqué(\\?)")
     @Then("I wait visibility of {string} and nested {string}(\\?)")
-    public void waitVisibilityOfNestedElementsLocatedBy(String pageElement, String childPageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitVisibilityOfNestedElementsLocatedBy(String pageElement, String childPageElement,
+            List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
         String childPage = childPageElement.split("-")[0];
         String childElementName = childPageElement.split("-")[1];
-        Wait.until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)),
+        Wait.until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(
+                Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)),
                 Utilities.getLocator(Page.getInstance(childPage).getPageElementByKey('-' + childElementName))));
     }
 
