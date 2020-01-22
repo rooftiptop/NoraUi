@@ -8,7 +8,6 @@ package com.github.noraui.cucumber.interceptor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,8 +15,6 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 
-import com.github.noraui.application.page.Page;
-import com.github.noraui.application.page.annotation.AsPageElement;
 import com.github.noraui.cucumber.annotation.RetryOnFailure;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.log.annotation.Loggable;
@@ -55,15 +52,6 @@ public class StepInterceptor implements MethodInterceptor {
                     log.info("---> " + stepAnnotation.annotationType().getSimpleName() + " "
                             + String.format(matcher.group(1).replaceAll("\\{\\S+\\}", "{%s}").replace("(\\?)", ""),
                                     invocation.getArguments()));
-                }
-                Parameter[] params = m.getParameters();
-                for (int i = 0; i < params.length; i++) {
-                    if (params[i].isAnnotationPresent(AsPageElement.class)) {
-                        final String strPageElement = (String) invocation.getArguments()[i];
-                        String page = strPageElement.split("-")[0];
-                        String elementName = strPageElement.split("-")[1];
-                        invocation.getArguments()[i] = Page.getInstance(page).getPageElementByKey('-' + elementName);
-                    }
                 }
             }
         }

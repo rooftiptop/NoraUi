@@ -22,6 +22,7 @@ import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Utilities;
 
 import io.cucumber.java.en.Then;
+import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Lorsque;
 
 @Loggable
@@ -343,27 +344,28 @@ public class WaitSteps extends Step {
     }
 
     @Conditioned
-    @Lorsque("J'attends la visibilité de {string}(\\?)")
-    @Then("I wait visibility of {string}(\\?)")
-    public void waitVisibilityOf(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        Wait.until(ExpectedConditions
-                .visibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+    @Alors("{page-element} est visible(\\?)")
+    @Then("{page-element} is visible(\\?)")
+    public void waitVisibilityOf(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
+        Wait.until(ExpectedConditions.visibilityOf(Utilities.findElement(pageElement)));
     }
 
     @Conditioned
-    @Lorsque("J'attends la visibilité de {string} et {string} imbriqué(\\?)")
-    @Then("I wait visibility of {string} and nested {string}(\\?)")
-    public void waitVisibilityOfNestedElementsLocatedBy(String pageElement, String childPageElement,
+    @Alors("{page-element} n'est pas visible(\\?)")
+    @Then("{page-element} is not visible(\\?)")
+    public void waitNonVisibilityOf(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException {
+        Wait.until(ExpectedConditions.not(ExpectedConditions.visibilityOf(Utilities.findElement(pageElement))));
+    }
+
+    @Conditioned
+    @Alors("Les éléments imbriqués {page-element} et {page-element} devraient être visibles(\\?)")
+    @Then("Nested elements {page-element} and {page-element} should be visible(\\?)")
+    public void waitVisibilityOfNestedElementsLocatedBy(PageElement pageElement, PageElement childPageElement,
             List<GherkinStepCondition> conditions) throws TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        String childPage = childPageElement.split("-")[0];
-        String childElementName = childPageElement.split("-")[1];
-        Wait.until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(
-                Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)),
-                Utilities.getLocator(Page.getInstance(childPage).getPageElementByKey('-' + childElementName))));
+        Wait.until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(Utilities.getLocator(pageElement),
+                Utilities.getLocator(childPageElement)));
     }
 
 }
