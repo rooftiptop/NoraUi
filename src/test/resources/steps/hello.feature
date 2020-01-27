@@ -17,6 +17,7 @@ Feature: hello (Function to validate the environment.)
         |element2|<element2>|
         
     Then I wait 1 seconds
+    And The element 'bakery.DemoPage-file_input_text_field' is not visible
 
     Given 'BAKERY_DEMO' is opened
     Then The DEMO portal is displayed

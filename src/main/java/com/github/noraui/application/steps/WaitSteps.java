@@ -9,6 +9,7 @@ package com.github.noraui.application.steps;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 
@@ -16,9 +17,12 @@ import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
+import com.github.noraui.exception.FailureException;
+import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.log.annotation.Loggable;
+import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 
 import io.cucumber.java.en.Then;
@@ -344,19 +348,20 @@ public class WaitSteps extends Step {
     }
 
     @Conditioned
-    @Alors("{page-element} est visible(\\?)")
-    @Then("{page-element} is visible(\\?)")
-    public void waitVisibilityOf(PageElement pageElement, List<GherkinStepCondition> conditions)
-            throws TechnicalException {
-        Wait.until(ExpectedConditions.visibilityOf(Utilities.findElement(pageElement)));
-    }
-
-    @Conditioned
-    @Alors("{page-element} n'est pas visible(\\?)")
-    @Then("{page-element} is not visible(\\?)")
-    public void waitNonVisibilityOf(PageElement pageElement, List<GherkinStepCondition> conditions)
-            throws TechnicalException {
-        Wait.until(ExpectedConditions.not(ExpectedConditions.visibilityOf(Utilities.findElement(pageElement))));
+    @Alors("L'élément {page-element} {is-isnot} visible(\\?)")
+    @Then("The element {page-element} {is-isnot} visible(\\?)")
+    public void waitVisibilityOf(PageElement pageElement, Boolean not, List<GherkinStepCondition> conditions)
+            throws FailureException {
+        WebElement webElement = null;
+        try {
+            webElement = Utilities.findElement(pageElement);
+            Wait.until(ExpectedConditions.visibilityOf(webElement), not);
+        } catch (Exception e) {
+            if (!not) {
+                new Result.Failure<>(pageElement, Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT),
+                        true, pageElement.getPage().getCallBack());
+            }
+        }
     }
 
     @Conditioned
